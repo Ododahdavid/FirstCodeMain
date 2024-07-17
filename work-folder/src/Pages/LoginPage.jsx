@@ -65,6 +65,8 @@ const LoginPage = () => {
                     });
 
                     if (loginResponse.ok) {
+                        localStorage.removeItem('tutorData'); // added this line just incase the user does not log out, and logs in another user, it will remove the previos saved details in the localStorage... so it will not coflict each other
+
                         toast.success("Login Successful", {
                             style: {
                                 background: "rgb(144, 234, 96)",

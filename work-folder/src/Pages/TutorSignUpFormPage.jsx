@@ -156,9 +156,10 @@ const TutorSignUpFormPage = () => {
           },
           body: JSON.stringify(TutorDetails),
         });
-        
+
         if (response.ok) {
           // Handling the api call success
+          localStorage.removeItem('tutorData');  // added this line just incase the user does not log out, and logs in another user, it will remove the previos saved details in the localStorage... so it will not coflict each other
           setIsLoading(false);
           TutorSignUpFormButton.current.disabled = false;
           toast.success("User Created Successfully", {
@@ -190,13 +191,13 @@ const TutorSignUpFormPage = () => {
           setIsLoading(false)
           const errorMessage = errorData.message || "Login failed"; // Adjust based on the actual error structure
           toast.error(errorMessage, {
-              style: {
-                  background: "rgb(255, 139, 139)",
-              },
+            style: {
+              background: "rgb(255, 139, 139)",
+            },
           });
-        setTimeout(()=>{
-          TutorSignUpFormButton.current.disabled = false;
-        }, 1500)
+          setTimeout(() => {
+            TutorSignUpFormButton.current.disabled = false;
+          }, 1500)
 
         }
       } catch (error) {

@@ -173,7 +173,7 @@ const TutorSignUpFormPage = () => {
           const tutorData = await response.json();
           localStorage.setItem("tutorData", JSON.stringify(tutorData))
           localStorage.setItem('token', tutorData.token);
-          console.log(tutorData)
+          // clearing the form fields after successful registration
           setTutorDetails({
             firstname: "",
             lastname: "",

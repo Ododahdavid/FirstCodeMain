@@ -24,7 +24,7 @@ router.get("/tutor/get/courses", loggedIn, Restrict("tutor"), async (req, res, n
       const tutorId = req.tutor._id; // Tutor ID from the middleware
       const currentTutorCourses = await Course.find({ tutorId: tutorId }).populate("tutorId", 'firstname lastname');
       res.status(200).json(currentTutorCourses);
-      console.log(currentTutorCourses)
+
     } catch (err) {
       next(err);
     }

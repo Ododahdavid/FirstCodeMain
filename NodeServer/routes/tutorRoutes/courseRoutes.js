@@ -8,7 +8,8 @@ import Tutor from "../../models/tutorModels/tutorModel.js";
 const router = express.Router();
 
 
-// create a course
+// route or function create a course
+// i restricted this fucntion to only logged in tutors
 router.post("/tutor/new/course", loggedIn, Restrict("tutor"),  async (req, res, next) => {
     try {
         req.body.tutorId = req.tutor._id;
@@ -19,6 +20,14 @@ router.post("/tutor/new/course", loggedIn, Restrict("tutor"),  async (req, res, 
     }
 });
 
+//  route or function to get all of the cuurent logged in courses, so they can view thwm in their dashboard
+// i restricted this fucntion to only logged in tutors
+  // i used populate to include the tutor's first and last name in the course document
+  // so the frontend can display them in the courses list.
+ // i also added a restriction to only logged in tutors to access this route.
+ // you can add more restrictions or conditions as needed.
+ // i also added error handling in case any error occurs during the database operations.
+ // for example, if the course document is not found in the database, i return a 404 error.
 router.get("/tutor/get/courses", loggedIn, Restrict("tutor"), async (req, res, next) => {
     try {
       const tutorId = req.tutor._id; // Tutor ID from the middleware
@@ -30,7 +39,8 @@ router.get("/tutor/get/courses", loggedIn, Restrict("tutor"), async (req, res, n
     }
   });
 
-  // Delete a course
+  // route or function to Delete a course
+
 router.delete("/tutor/delete/course/:courseId", loggedIn, Restrict("tutor"), async (req, res, next) => {
   try {
       const courseId = req.params.courseId;

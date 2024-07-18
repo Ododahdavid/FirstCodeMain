@@ -33,7 +33,7 @@ const generateSignToken = (_id, email, experiencelevel) => {
   return jwt.sign(payload, secretkey, exp);
 };
 
-// register a tutor
+//  route or function to register a tutor
 router.post('/new/tutor', async (req, res, next) => {
   const { firstname, lastname, email, experiencelevel, password } = req.body;
 
@@ -64,7 +64,7 @@ router.post('/new/tutor', async (req, res, next) => {
 
       });
     } else {
-     return  res.status(400).json({ message: 'Invalid user data' });
+      return res.status(400).json({ message: 'Invalid user data' });
     }
   } catch (err) {
     // res.status(500).send(err.message);
@@ -74,7 +74,7 @@ router.post('/new/tutor', async (req, res, next) => {
 });
 
 
-//login a tutor
+//route or function to login a tutor
 router.post("/login/tutor", async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -96,12 +96,14 @@ router.post("/login/tutor", async (req, res, next) => {
 
   }
   catch (err) {
-    next(err) 
+    next(err)
   }
 })
 
 
 // Request password reset
+// This route generates a token and sends it to the users/tutors email using my email for now
+// the token is only valid for 10 minutes. 
 router.post('/tutor/new/password', async (req, res, next) => {
   const { email } = req.body;
 
@@ -119,6 +121,7 @@ router.post('/tutor/new/password', async (req, res, next) => {
     tutor.resetPasswordExpires = resetTokenExpires;
     await tutor.save();
 
+    // sending the email to the user
     await sendEmail({
       to: email,
       subject: 'Password Reset',
@@ -163,7 +166,7 @@ router.post('/tutor/new/password', async (req, res, next) => {
     return res.status(500).json({ message: 'Error sending email. Please try again later.' });
   }
 });
-  
+
 
 
 // Resetting user password
@@ -172,7 +175,7 @@ router.post('/tutor/reset/password', async (req, res, next) => {
 
   try {
     const tutor = await Tutor.findOne({
-      email, 
+      email,
       resetPasswordToken: token,
       resetPasswordExpires: { $gt: Date.now() },
     });

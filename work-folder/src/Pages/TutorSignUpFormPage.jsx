@@ -159,6 +159,7 @@ const TutorSignUpFormPage = () => {
 
         if (response.ok) {
           // Handling the api call success
+          localStorage.removeItem("token") // removes previous stored token incase the user does not log out before ;ogging into another account on the same device 
           localStorage.removeItem('tutorData');  // added this line just incase the user does not log out, and logs in another user, it will remove the previos saved details in the localStorage... so it will not coflict each other
           setIsLoading(false);
           TutorSignUpFormButton.current.disabled = false;
@@ -171,6 +172,7 @@ const TutorSignUpFormPage = () => {
           // saving the tutor details in a variable       
           const tutorData = await response.json();
           localStorage.setItem("tutorData", JSON.stringify(tutorData))
+          localStorage.setItem('token', tutorData.token);
           console.log(tutorData)
           setTutorDetails({
             firstname: "",

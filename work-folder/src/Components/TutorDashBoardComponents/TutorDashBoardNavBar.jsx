@@ -16,6 +16,7 @@ const TutorDashBoardNavBar = () => {
 
     const handlelogOut = () => {
         setLogOutClick(true)
+        localStorage.removeItem("token") // removes previous stored token incase the user does not log out before ;ogging into another account on the same device 
         localStorage.removeItem('tutorData');
         setUserMenu(false);
         navigate("/*")

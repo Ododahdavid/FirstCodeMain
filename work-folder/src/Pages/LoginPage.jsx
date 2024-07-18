@@ -65,6 +65,7 @@ const LoginPage = () => {
                     });
 
                     if (loginResponse.ok) {
+                        localStorage.removeItem("token") // removes previous stored token incase the user does not log out before ;ogging into another account on the same device 
                         localStorage.removeItem('tutorData'); // added this line just incase the user does not log out, and logs in another user, it will remove the previos saved details in the localStorage... so it will not coflict each other
 
                         toast.success("Login Successful", {

@@ -1,11 +1,11 @@
 import nodemailer from 'nodemailer';
 
 
-// this email.js is used to send rest passwords code to the clients email address
+// this email.js is used to send reset passwords code to the clients email address
 const sendEmail = async ({ to, subject, html }) => {
     try {
-        console.log('Trying to send email from ');
-        console.log(process.env.EMAIL_USER);
+        // console.log('Trying to send email from ');
+        // console.log(process.env.EMAIL_USER);
 
         // CREATE TRANSPORTER 
         const transporter = nodemailer.createTransport({

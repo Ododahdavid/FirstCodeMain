@@ -818,6 +818,7 @@ form button:disabled {
   background-color: rgb(12, 36, 75);
   color: white;
   display: none;
+  position: fixed;
 }
 .UserMenuProfileDisplay {
   width: 100%;

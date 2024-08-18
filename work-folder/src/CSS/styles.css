@@ -566,6 +566,11 @@ footer {
   justify-content: center;
   align-items: center;
 }
+
+.StudentSignUpForm-Container form label select option{
+  text-align: center;
+}
+
 .sign-upButtonContainer {
   width: 100;
   height: fit-content;

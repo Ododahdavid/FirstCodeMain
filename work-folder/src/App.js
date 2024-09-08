@@ -2,6 +2,7 @@ import React, { Suspense } from "react"
 import "./CSS/styles.css"
 import "./CSS/PageLoader.css"
 import "./CSS/ButonLoader.css"
+import "./CSS/studentDashBoardStyle.css"
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 

@@ -6,6 +6,8 @@ const studentSchema = new mongoose.Schema({
     lastname: {type: String, required: [true, "please enter your last name"]},
     email: {type: String, required: [true, "please enter a valid email address"], unique: true, lowercase: true, trim: true },
     password: {type: String, required: [true, "please enter a password"], minlength: [8, 'password must be at least 8 characters'], select: false},
+    streak: {type:Number, default: 0},
+    lastLogin: { type: Date }, // Add this field to track the last login date
     resetPasswordToken: { type: String }, 
     resetPasswordExpires: { type: Date },
     //Updating my student model to include a reset token and its expiry:

@@ -25,6 +25,15 @@ export const AppcontextProvider = (props) => {
     const [TutorCreateCourseIconClick, setTutorCreateCourseIconClick] = useState(false)
     const [TutorNotificationIconClick, setTutorNotificationIconClick] = useState(false)
 
+
+    // Destructuring variables that will change values when the menus on the student dashboard side bar is clicked
+    const [StudentDashboardIconClick, setStudentDashboardIconClick] = useState(true)
+    const [StudentSearchIconClick, setStudentSearchIconClick] = useState(false)
+    const [StudentCoursesIconClick, setStudentCoursesIconClick] = useState(false)
+    const [StudentInboxIconClick, setStudentInboxIconClick] = useState(false)
+
+
+
     {/* npm install recharts  to install Charts*/ }
 
 
@@ -166,7 +175,7 @@ export const AppcontextProvider = (props) => {
 
     //   Here, is where i place the variables i want to make accessible to all components in my Project
     const contextValue = {
-       TutorDashBoardIconClick, setTutorDashBoardIconClick, TutorCoursesIconClick, setTutorCoursesIconClick, TutorCreateCourseIconClick, setTutorCreateCourseIconClick, TutorNotificationIconClick, setTutorNotificationIconClick, TutorDashboardGraph, 
+       TutorDashBoardIconClick, setTutorDashBoardIconClick, TutorCoursesIconClick, setTutorCoursesIconClick, TutorCreateCourseIconClick, setTutorCreateCourseIconClick, TutorNotificationIconClick, setTutorNotificationIconClick, TutorDashboardGraph, StudentDashboardIconClick, setStudentDashboardIconClick, StudentSearchIconClick, setStudentSearchIconClick, StudentCoursesIconClick, setStudentCoursesIconClick, StudentInboxIconClick, setStudentInboxIconClick
     };
 
     return (

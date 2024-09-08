@@ -53,6 +53,8 @@ const LoginPage = () => {
         event.preventDefault();
         setSubmitClick(true);
 
+                // condition if the user picks "Student" in the options on the login page
+
         if (fieldValidator()) {
             if (loginDetails.role === "Tutor") {
                 try {
@@ -98,10 +100,61 @@ const LoginPage = () => {
                 } catch (error) {
                     console.error('Error:', error);
                 }
+
+            }
+            // condition if the user picks "Student" in the options on the login page
+             else if(loginDetails.role === "Student"){
+                try {
+                    const loginResponse = await fetch('http://127.0.0.1:7000/api/v1/user/login/student', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(loginDetails),
+                    });
+
+                    if (loginResponse.ok) {
+                        localStorage.removeItem("token") // removes previous stored token incase the user does not log out before ;ogging into another account on the same device 
+                        localStorage.removeItem('studentData'); // added this line just incase the user does not log out, and logs in another user, it will remove the previos saved details in the localStorage... so it will not coflict each other
+                        localStorage.removeItem('tutorData'); // added this line just incase the user does not log out, and logs in another user, it will remove the previos saved details in the localStorage... so it will not coflict each other
+                        localStorage.removeItem('lastStreakDialogShown'); // added this line just incase the user does not log out, and logs in another user, it will remove the previos saved details in the localStorage... so it will not coflict each other
+                        
+
+                        toast.success("Login Successful", {
+                            style: {
+                                background: "rgb(144, 234, 96)",
+                            },
+                        });
+                        setSubmitClick(false)
+                        const loginData = await loginResponse.json();
+                        localStorage.setItem("studentData", JSON.stringify(loginData))
+                        localStorage.setItem('token', loginData.token);
+
+                        // Navigate to the Tutor dashboard page after successful login
+                        setTimeout(() => {
+                            navigate("/studentdashboard")
+                        }, 2000);
+
+                    } else {
+                        // Handle error
+                        const errorData = await loginResponse.json();
+                        console.error('Login failed:', errorData);
+                        setSubmitClick(false)
+                        const errorMessage = errorData.message || "Login failed"; // Adjust based on the actual error structure
+                        toast.error(errorMessage, {
+                            style: {
+                                background: "rgb(255, 139, 139)",
+                            },
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
             }
         }
         else {
             setSubmitClick(false)
+
         }
 
 

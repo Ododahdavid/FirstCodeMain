@@ -1,0 +1,311 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+  /* outline: dashed 1px red; */
+}
+.studentDashboardNavbar {
+  width: 100%;
+  height: 70px;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  position: sticky;
+  top: 0px;
+  z-index: 100;
+  background-color: #e5e5f7;
+}
+.studentDashboardNavbar .logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.studentDashBoardSidebar {
+  width: 20%;
+  height: 100%;
+  background-color: white;
+  padding: 20px 0px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+}
+.studentDashBoardSidebar div {
+  width: 90%;
+  height: 60px;
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 10px 0px;
+  gap: 10px;
+}
+.studentDashBoardSidebar div img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  padding: 10px;
+}
+.studentDashBoardSidebar div:hover {
+  outline: solid 1px blue;
+}
+.studentDashboardMainSection {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: black;
+  position: relative;
+}
+.studentDashboardDynamicRenderingBox {
+  width: 80%;
+  height: 100%;
+  /* border: solid 2px black; */
+  padding: 20px;
+  overflow: auto;
+  background-color: rgb(218, 214, 214);
+  position: relative;
+}
+
+/* student dashboard styling */
+.studentDashboardBanner{
+  width: 100%;
+  height: 300px;
+  /* background-color: blue; */
+  background: rgb(15, 50, 230);
+  background: linear-gradient(
+    90deg,
+    rgba(15, 50, 230, 1) 0%,
+    rgba(94, 107, 187, 0.9831582291119573) 100%
+  );
+  border-radius: 24px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  flex-direction: column;
+}
+.profilePictureBlock{
+  width: 100%;
+  height: 30%;
+  /* outline: dashed 2px yellow; */
+}
+.StudentGreetingsBlock{
+  width: 100%;
+  height: 50%;
+  /* outline: dashed green 2px; */
+}
+.StudentGreetingsBlock h1{
+  color: #fff;
+  font-size: 60px;
+}
+.StudentGreetingsBlock p{
+  color: rgb(255, 153, 0);
+}
+.studentStatBlock{
+  width: 100%;
+  height: 20%;
+  /* outline: dashed green 2px; */
+  display: flex;
+  justify-content: start;
+  align-items: end;
+}
+.studentStatBlock h2{
+  color: #fff;
+}
+.studentStatBlock h2 span{
+  color: rgb(255, 153, 0);
+  animation: fontResize;
+}
+.StudentprofilePictureWrapper{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ongoingCoursesSection{
+  width: 100%;
+  height: fit-content;
+}
+.ongoingCoursesSection h1{
+  width: 100%;
+  text-align: center;
+  color: rgb(255, 153, 0);
+  font-size: 40px;
+  text-decoration: underline;
+}
+/* Dialog styling */
+.streakReminderDialog {
+  width: 500px;
+  z-index: 99;
+  height: fit-content;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0); /* Start with scale(0) */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 9px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgb(218, 214, 214);
+  opacity: 0;  /* Start with opacity 0 */
+  transition: transform 0.4s ease-out, opacity 0.4s ease-out; /* Add transition effects */
+}
+
+.streakReminderDialog[open] {
+  transform: translate(-50%, -50%) scale(1); /* Scale up to normal size */
+  opacity: 1; /* Fade in */
+}
+
+/* Animation for shrinking effect */
+.streakReminderDialog.closing {
+  transform: translate(-50%, -50%) scale(0); /* Scale down to disappear */
+  opacity: 0; /* Fade out */
+  transition: transform 0.4s ease-in, opacity 0.4s ease-in; /* Reverse transition effects */
+}
+
+/* Backdrop blur */
+.streakReminderDialog::backdrop {
+  backdrop-filter: blur(8px);
+}
+
+/* Button styling */
+.streakReminderDialog button {
+  width: fit-content;
+  height: fit-content;
+  padding: 12px;
+  font-size: 20px;
+  font-weight: bolder;
+  color: #fff;
+  background-color: blue;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Header styling */
+.streakReminderDialog h2 {
+  color: blue;
+  font-size: 30px;
+}
+
+.streakReminderDialog h3 {
+  text-align: center;
+  font-size: 15px;
+}
+
+.streakReminderDialog h3 span {
+  text-align: center;
+  font-size: 25px;
+  color: rgb(255, 153, 0);
+}
+
+.streakIMageWrapper {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.studentDashBoardSearchBarContainer{
+  width: 100%;
+  height: 60px;
+  /* outline: dashed 1px red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.studentDashBoardSearchBar{
+  width: 60%;
+  height: 80%;
+  border-radius: 24px;
+  /* outline: solid 1px red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.studentDashBoardSearchBar input{
+  flex: 1;
+  height: 100%;
+  padding: 15px;
+  outline: none;
+  border: none;
+}
+.studentDashBoardSearchBar button{
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 15px;
+  font-weight: bold;
+  background-color: blue;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+.searchCoursesDisplayContainer{
+  margin-top: 30px;
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.courseCard{
+  width: 300px;
+  height: 200px;
+  /* outline: solid red 1px; */
+  background-color: white;
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+.courseCard h3{
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+}
+.courseCard p {
+  width: 100%;
+  font-size: 15px;
+  line-height: 1.5em;             /* Adjust this value to control line spacing */
+  max-height: 4.5em;              /* 3 lines x 1.5em (line height) = 4.5em */
+  
+  /* Multi-line truncation with ellipsis */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+.courseCard span span{
+  color: rgb(255, 153, 0);
+}
+

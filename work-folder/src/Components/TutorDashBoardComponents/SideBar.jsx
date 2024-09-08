@@ -12,7 +12,7 @@ import { AppContext } from '../../GeneralComponents/ContextApi'
 const SideBar = () => {
 
     const {TutorDashBoardIconClick, setTutorDashBoardIconClick, TutorCoursesIconClick, setTutorCoursesIconClick, TutorCreateCourseIconClick, setTutorCreateCourseIconClick, TutorNotificationIconClick, setTutorNotificationIconClick} = useContext(AppContext)
-
+    // incase i run into this problem
     // Function to take note of when the dashboard is clicked, and it sets TutorDashBoardIconClick to true. When the variable is true, the Dashboard icon, and background clolor should change, and the DashBoard should be rendered. Thats the idea for the other icons!!!!
     const handleTutorDashBoardIconClick = () => {
         setTutorDashBoardIconClick(true)

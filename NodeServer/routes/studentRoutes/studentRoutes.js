@@ -60,6 +60,21 @@ router.post("/login/student", async (req, res, next) => {
   
     try {
       const student = await Student.findOne({ email }).select("+password")
+
+      // calculating for user streak
+      const today = new Date();
+      const lastLoginDate = new Date(student.lastLogin)
+      const diffInDays = Math.floor((today - lastLoginDate) / (1000 * 60 * 60 * 24));
+
+      if(diffInDays === 1){
+        student.streak +=1 // incrementing the users streak if they log in the next consecutive day
+      }
+      else if(diffInDays > 1){
+        student.streak = 0 // setting the streak to 0 if they logged in more than a day since last login
+      }
+
+      student.lastLogin = today
+      await student.save()// saving the updated student data
   
       if (student && (await student.comparePassword(password))) {
         res.json({
@@ -67,6 +82,7 @@ router.post("/login/student", async (req, res, next) => {
           firstname: student.firstname,
           lastname: student.lastname,
           email: student.email,
+          streak: student.streak,
           token: generateSignToken(student._id, student.email),
         })
       } else {
@@ -82,13 +98,20 @@ router.post("/login/student", async (req, res, next) => {
 
 
   // endpoint to get top 20 recommended courses fromtutor in the student search page
-  router.get("/student/recommended/courses", async(req, res, next) => {
-    try{
-      const offset = parseInt(req.query.offset) || 0;  // Default to offset 0... the offset represesnt the amount of courses allready fetched from the database. 
+  router.get("/student/recommended/courses", async (req, res, next) => {
+    try {
+      const offset = parseInt(req.query.offset) || 0;  // Default to offset 0
       const limit = parseInt(req.query.limit) || 20;  // Default to 20 courses per request
-      // code to fetch the first 20 recommended courses from tutors on students search page.
-      const recommendedCourses = await Course.find().skip(offset).limit(limit)
-      // the line above, simply skips the offset and fetches the next set of data in this case courses. and maintains a limit of 20 courses to be fetched
+  
+      // Fetch the courses and populate the tutor's firstname and lastname
+      const recommendedCourses = await Course.find()
+        .skip(offset)
+        .limit(limit)
+        .populate({
+          path: 'tutorId',  // This should be the reference field in your Course schema
+          select: 'firstname lastname'  // Specify the fields to retrieve
+        });
+  
       // If no courses are found, send a 404 response
       if (recommendedCourses.length === 0) {
         return res.status(404).send({ message: "No recommended courses found" });
@@ -96,12 +119,38 @@ router.post("/login/student", async (req, res, next) => {
   
       // Send the recommended courses as a response
       res.status(200).send(recommendedCourses);
+    } catch (err) {
+      // Log the error and send a 500 response with a generic error message
+      console.error(err);
+      res.status(500).send({ message: "An error occurred while fetching recommended courses" });
     }
-    catch(err){
-       // Log the error and send a 500 response with a generic error message
-    console.error(err);
-    res.status(500).send({ message: "An error occurred while fetching recommended courses" });
-    }
-  })
+  });
+  
+
+  // i am setting a reminder below this to remind me of what i thik the frontend implementstion should look and work like
+  /*
+    let offset = 0;
+const limit = 20;
+
+window.addEventListener('scroll', async () => {
+  // Check if the user has scrolled near the bottom of the page
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+    // Fetch more courses
+    const response = await fetch(`/student/recommended/courses?offset=${offset}&limit=${limit}`);
+    const courses = await response.json();
+
+    // Append new courses to the page (this is where you'd update your UI)
+    appendCoursesToUI(courses);
+
+    // Update the offset for the next request
+    offset += limit;
+  }
+});
+
+function appendCoursesToUI(courses) {
+  // Your logic to append courses to the DOM
+}
+
+  */
 
   export default router;

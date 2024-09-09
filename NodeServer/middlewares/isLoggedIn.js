@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import Tutor from '../models/tutorModels/tutorModel.js';
+import Student from '../models/studentModels/studentModel.js';
 
 // Middleware to ensure the user is logged in
 const loggedIn = async (req, res, next) => {
@@ -15,14 +16,22 @@ const loggedIn = async (req, res, next) => {
         return res.status(401).json({ message: 'Not authorized, token invalid' });
       }
 
-      // Fetch the tutor from the database using the decoded _id
-      const tutor = await Tutor.findById(decoded._id).select('-password');
+      // Try to find the user as a Tutor first
+      let user = await Tutor.findById(decoded._id).select('-password');
 
-      if (!tutor) {
+      // If no Tutor is found, try finding the user as a Student
+      if (!user) {
+        user = await Student.findById(decoded._id).select('-password');
+      }
+
+      // If no user (either Tutor or Student) is found, return an error
+      if (!user) {
         return res.status(401).json({ message: 'Not authorized, user not found' });
       }
 
-      req.tutor = tutor; // Attach tutor to request object
+      // Attach the found user (either Tutor or Student) to the request object
+      req.user = user;
+
       next(); // Proceed to next middleware/route handler
     } catch (error) {
       res.status(401).json({ message: 'Not authorized, token failed' });

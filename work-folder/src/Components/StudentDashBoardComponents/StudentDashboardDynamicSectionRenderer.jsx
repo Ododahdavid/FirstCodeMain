@@ -123,10 +123,12 @@ export const StudentSearchPage = () => {
         // Define an async function inside useEffect
         const fetchRecommendedCourses = async () => {
             try {
+                const token = localStorage.getItem("token");
                 const response = await fetch('http://127.0.0.1:7000/api/v1/user/student/recommended/courses', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
                     },
                 });
                 const data = await response.json(); // Convert response to JSON
@@ -140,6 +142,7 @@ export const StudentSearchPage = () => {
         fetchRecommendedCourses();
     }, [])
 
+    // state to get the search value from the search bar
     const [searchValue, setSearchValue] = useState({
         value: ""
     })

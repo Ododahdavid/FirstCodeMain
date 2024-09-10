@@ -154,7 +154,7 @@ function appendCoursesToUI(courses) {
 
 */
 
-router.get("/student/searched/courses", loggedIn, async (req, res, next)=>{
+router.post("/student/searched/courses", loggedIn, async (req, res, next)=>{
   try{
     const {value} = req.body;
     const searchedCourses = await Course.find({

@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import streakPic from "../../SrcImages/streakPic.png";
+import toast, { Toaster } from "react-hot-toast";
+
 
 export const StudentDashboardPage = () => {
     const streakRemiderDialog = useRef(null);
@@ -11,7 +13,7 @@ export const StudentDashboardPage = () => {
         }
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
-    
+
 
     // State to handle student details for rendering on the page
     const [studentDetails, setStudentDetails] = useState({
@@ -109,16 +111,17 @@ export const StudentDashboardPage = () => {
 
 export const StudentSearchPage = () => {
 
-        // function to capitalise the first letter of a string
-        function capitalizeFirstLetter(string) {
-            if (string.length === 0) {
-                return string; // Return the string if it's empty
-            }
-            return string.charAt(0).toUpperCase() + string.slice(1);
+    // function to capitalise the first letter of a string
+    function capitalizeFirstLetter(string) {
+        if (string.length === 0) {
+            return string; // Return the string if it's empty
         }
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 
     const [recommendedCourses, setRecommendedCourses] = useState([])
-    //  function to fetch random/recommended courses before student fetches
+
+    //  function to fetch random/recommended courses before student searches/makes a search
     useEffect(() => {
         // Define an async function inside useEffect
         const fetchRecommendedCourses = async () => {
@@ -156,20 +159,42 @@ export const StudentSearchPage = () => {
         }));
     };
 
-    const searchBarInputValidator = () =>{
+    const searchBarInputValidator = () => {
         if (searchValue.value.trim().length === 0) {
+            toast.error("Input is required", {
+                style: {
+                    background: "rgb(255, 139, 139)",
+                },
+            });
             return false;
         }
         return true;
     }
 
-    const handleSearchSubmit = (event) =>{
+    // state to store the incoming search results from the student search bar
+    const [searchResults, setSearchResults] = useState([])
+
+    const handleSearchSubmit = async(event) => {
         event.preventDefault();
-        if(searchBarInputValidator()){
-            try{
-                // fetches courses starting with the value of the search... please wait while i work on the endpoint to perform this functionality
+        if (searchBarInputValidator()) {
+            try {
+                const token = localStorage.getItem("token");
+                
+                const response = await fetch('http://127.0.0.1:7000/api/v1/user/student/searched/courses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(searchValue),
+                });
+                const data = await response.json(); // Convert response to JSON
+                setSearchResults(data); // Update the state with the fetched data
+                setTimeout(() => {
+                console.log(searchResults)
+                }, 2000);
             }
-            catch(err){
+            catch (err) {
                 console.error('Error searching courses:', err);
             }
         }
@@ -180,7 +205,7 @@ export const StudentSearchPage = () => {
         <>
             {/* Search bar for student to search for courses    // search bar */}
             <div className={"studentDashBoardSearchBarContainer"}>
-                <form className={"studentDashBoardSearchBar"}>
+                <form onSubmit={handleSearchSubmit} className={"studentDashBoardSearchBar"}>
                     <input name='value' value={searchValue.value} type="text" placeholder="Search courses" onChange={handleInputValueChange} />
                     <button type="submit">Search</button>
                 </form>
@@ -203,6 +228,9 @@ export const StudentSearchPage = () => {
                 ) : (
                     <p>No courses available at the moment.</p>
                 )}
+
+                {/* Adding the toaster styling here */}
+                <Toaster position="top-center" reverseOrder={false} />
             </section>
 
 

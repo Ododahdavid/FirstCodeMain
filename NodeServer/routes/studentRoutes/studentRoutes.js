@@ -158,7 +158,7 @@ router.get("/student/searched/courses", loggedIn, async (req, res, next)=>{
   try{
     const {value} = req.body;
     const searchedCourses = await Course.find({
-      title: { $regex: `^${value}`, $options: "i"} // this searches for any course that starts with  the value of the search. and it is case insensitive.
+      title: { $regex: `${value}`, $options: "i"} // this searches for any course that contains  the value of the search. and it is case insensitive.
     })
     res.json(searchedCourses)
   }

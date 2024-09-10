@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import streakPic from "../../SrcImages/streakPic.png";
 import toast, { Toaster } from "react-hot-toast";
+import Loader from "../../Loader/Loader.jsx"
 
 
 export const StudentDashboardPage = () => {
@@ -179,7 +180,12 @@ export const StudentSearchPage = () => {
         if (searchBarInputValidator()) {
             try {
                 const token = localStorage.getItem("token");
+                searchLoaderContainer.current.style.display= "flex"
+                recommendedCoursesContainer.current.style.display = 'none';
+                searchedCoursesContainer.current.style.display = 'none';
                 
+                
+              
                 const response = await fetch('http://127.0.0.1:7000/api/v1/user/student/searched/courses', {
                     method: 'POST',
                     headers: {
@@ -190,15 +196,22 @@ export const StudentSearchPage = () => {
                 });
                 const data = await response.json(); // Convert response to JSON
                 setSearchResults(data); // Update the state with the fetched data
-                setTimeout(() => {
-                console.log(searchResults)
-                }, 2000);
+                recommendedCoursesContainer.current.style.display = 'none';
+                searchedCoursesContainer.current.style.display = 'flex';
+                searchLoaderContainer.current.style.display= "none"
+
+            
+              
             }
             catch (err) {
                 console.error('Error searching courses:', err);
             }
         }
     }
+
+    const recommendedCoursesContainer = useRef(null)
+    const searchedCoursesContainer = useRef(null)
+    const searchLoaderContainer = useRef(null)
 
 
     return (
@@ -215,6 +228,10 @@ export const StudentSearchPage = () => {
                     // section to diplay courses */}
 
             <section className={"searchCoursesDisplayContainer"}>
+
+                    {/* container that displays the recommended courses */}
+                <div ref={recommendedCoursesContainer} className={"recommendedCoursesContainer"}>
+                    <h1>Recommended Courses</h1>
                 {recommendedCourses.length > 0 ? (
                     recommendedCourses.map((course) => (
                         <div key={course.id} className={"courseCard"}>
@@ -228,6 +245,36 @@ export const StudentSearchPage = () => {
                 ) : (
                     <p>No courses available at the moment.</p>
                 )}
+                </div>
+
+                <br />
+                {/* ========================================================================= */}
+
+                {/* container that displays the searched courses */}
+                <div ref={searchedCoursesContainer} className={"searchedCoursesContainer"}>
+                    <h1>Search Results</h1>
+                {searchResults.length > 0 ? (
+                    searchResults.map((course) => (
+                        <div key={course.id} className={"courseCard"}>
+                            <h3>{capitalizeFirstLetter(course.title)}</h3>
+                            <br />
+                            <p>{course.description}</p>
+                            <br />
+                            <span>Created by: <span>{course.tutorId.firstname} {course.tutorId.lastname}</span></span>
+                        </div>
+                    ))
+                ) : (
+                    <p>No course matches your search, Try again.</p>
+                )}
+                </div>
+
+                {/* ========================================================================= */}
+
+                {/* addding a loader when searching */}
+
+                <div ref={searchLoaderContainer} className={"searchLoaderContainer"}>
+                    <Loader/>
+                </div>
 
                 {/* Adding the toaster styling here */}
                 <Toaster position="top-center" reverseOrder={false} />

@@ -159,7 +159,10 @@ router.post("/student/searched/courses", loggedIn, async (req, res, next)=>{
     const {value} = req.body;
     const searchedCourses = await Course.find({
       title: { $regex: `${value}`, $options: "i"} // this searches for any course that contains  the value of the search. and it is case insensitive.
-    })
+    }).populate({
+      path: 'tutorId',  // This should be the reference field in your Course schema
+      select: 'firstname lastname'  // Specify the fields to retrieve
+    });
     res.json(searchedCourses)
   }
   catch(err){

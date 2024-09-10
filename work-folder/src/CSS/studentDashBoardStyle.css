@@ -268,7 +268,6 @@
   width: 100%;
   height: fit-content;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -306,6 +305,46 @@
   text-align: center;
 }
 .courseCard span span{
+  color: blue;
+}
+.recommendedCoursesContainer{
+  width: 100;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.recommendedCoursesContainer h1{
+  width: 100%;
+  text-align: center;
   color: rgb(255, 153, 0);
+  font-size: 40px;
+
+}
+.searchedCoursesContainer{
+  display: none;
+  width: 100%;
+  height: fit-content;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  transition: all .3s ease-in-out;
+}
+.searchedCoursesContainer h1{
+  width: 100%;
+  text-align: center;
+  color: rgb(255, 153, 0);
+  font-size: 40px;
+
+}
+.searchLoaderContainer{
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
 }
 

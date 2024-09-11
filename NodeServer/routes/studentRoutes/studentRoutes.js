@@ -200,4 +200,19 @@ router.post("/student/enroll/:courseId", loggedIn, Restrict("student"), async(re
   }
 })
 
+// route to get the students enrolled Courses
+router.get("/student/enrolledCourses", loggedIn, Restrict("student"), async (req, res, next)=>{
+  try{
+    const studentId = req.user._id
+    const student = await Student.findById(studentId).populate("enrolledCourses") // finds the student and populates it's enrolled courses... giving me the needed details about each course
+
+    const enrolledCourses = student.enrolledCourses
+    res.status(200).json(enrolledCourses);
+  }
+  catch(err){
+    next("error message:",err.message )
+  }
+
+})
+
 export default router;

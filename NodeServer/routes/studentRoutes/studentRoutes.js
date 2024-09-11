@@ -186,6 +186,12 @@ router.post("/student/enroll/:courseId", loggedIn, Restrict("student"), async(re
     student.enrolledCourses.push(courseId)
     await student.save();
     res.send({message: "Course Enrolled Successfully"})
+
+    // Incrementing the studentCount in the course
+    const course = await Course.findById(couseId);
+    course.studentCount += 1
+    await course.save() //saving the current amount of students enrolled in the course
+    
     // i plan on sending a notification to the tutor about a new enrollment in one of his courses
     // coming soon....
   }

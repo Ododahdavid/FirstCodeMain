@@ -6,7 +6,8 @@ const courseSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     likes: { type: Number, default: 0 },
-    date: { type: Date, required: true, default: Date.now, immutable: true }
+    date: { type: Date, required: true, default: Date.now, immutable: true },
+    studentCount:{type:Number, default:0}
 });
 
 const Course = mongoose.model('Course', courseSchema);

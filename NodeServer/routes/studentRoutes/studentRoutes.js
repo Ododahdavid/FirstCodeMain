@@ -5,6 +5,7 @@ import sendEmail from "../../utils/email.js";
 import crypto from "crypto"
 import Course from '../../models/tutorModels/coursesModel.js';
 import loggedIn from '../../middlewares/isLoggedIn.js';
+import Restrict from '../../middlewares/restrict.js';
 
 const router = express.Router();
 
@@ -167,6 +168,29 @@ router.post("/student/searched/courses", loggedIn, async (req, res, next)=>{
   }
   catch(err){
     next(err)
+  }
+})
+
+router.post("/student/enroll/:courseId", loggedIn, Restrict("student"), async(req, res, next)=>{
+  try{
+    const studentId = req.user._id; //getting the student Id from the loggedIn middle ware
+    const courseId = req.params.courseId // getting the course Id from the request parameters
+
+    //Checking if the student has already enrolled for this course
+    const student = await Student.findById(studentId)
+    if(student.enrolledCourses.includes(courseId)){
+      res.status(400).send({message: "You have enrolled for this course already"})
+    }
+
+    // Enrolling sudent into the course
+    student.enrolledCourses.push(courseId)
+    await student.save();
+    res.send({message: "Course Enrolled Successfully"})
+    // i plan on sending a notification to the tutor about a new enrollment in one of his courses
+    // coming soon....
+  }
+  catch(err){
+    next("error message:", err.message)
   }
 })
 

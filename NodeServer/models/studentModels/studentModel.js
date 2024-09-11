@@ -8,8 +8,10 @@ const studentSchema = new mongoose.Schema({
     password: {type: String, required: [true, "please enter a password"], minlength: [8, 'password must be at least 8 characters'], select: false},
     streak: {type:Number, default: 0},
     lastLogin: { type: Date }, // Add this field to track the last login date
+    role: {type: String, required: true, default: "student"},
     resetPasswordToken: { type: String }, 
     resetPasswordExpires: { type: Date },
+    enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course', default: 0 }]
     //Updating my student model to include a reset token and its expiry:
 })
 

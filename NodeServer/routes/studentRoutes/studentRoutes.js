@@ -61,42 +61,50 @@ router.post("/login/student", async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    const student = await Student.findOne({ email }).select("+password")
+    const student = await Student.findOne({ email }).select("+password");
 
-    // calculating for user streak
-    const today = new Date();
-    const lastLoginDate = new Date(student.lastLogin)
-    const diffInDays = Math.floor((today - lastLoginDate) / (1000 * 60 * 60 * 24));
-
-    if (diffInDays === 1) {
-      student.streak += 1 // incrementing the users streak if they log in the next consecutive day
-    }
-    else if (diffInDays > 1) {
-      student.streak = 0 // setting the streak to 0 if they logged in more than a day since last login
-    }
-
-    student.lastLogin = today
-    await student.save()// saving the updated student data
-
-    if (student && (await student.comparePassword(password))) {
-      res.json({
-        _id: student._id,
-        firstname: student.firstname,
-        lastname: student.lastname,
-        email: student.email,
-        streak: student.streak,
-        token: generateSignToken(student._id, student.email),
-      })
-    } else {
+    if (!student || !(await student.comparePassword(password))) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-  }
-  catch (err) {
-    next(err)
-  }
-})
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set to beginning of day
 
+    if (student.lastLogin) {
+      const lastLogin = new Date(student.lastLogin);
+      lastLogin.setHours(0, 0, 0, 0); // Set to beginning of day hours =0, minutes = 0, seconds = 0, milliseconds = 0
+
+      const diffInDays = Math.floor((today - lastLogin) / (1000 * 60 * 60 * 24));
+
+      if (diffInDays === 0) {
+        // Same day login, don't change streak
+      } else if (diffInDays === 1) {
+        // Consecutive day login, increment streak
+        student.streak += 1;
+      } else {
+        // More than one day gap, reset streak
+        student.streak = 0;
+      }
+    } else {
+      // First time login
+      student.streak = 0;
+    }
+
+    student.lastLogin = new Date(); // Set to current time
+    await student.save();
+
+    res.json({
+      _id: student._id,
+      firstname: student.firstname,
+      lastname: student.lastname,
+      email: student.email,
+      streak: student.streak,
+      token: generateSignToken(student._id, student.email),
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
 
 // endpoint to get top 20 recommended courses fromtutor in the student search page

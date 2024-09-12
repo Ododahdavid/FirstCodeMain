@@ -175,17 +175,17 @@ export const StudentSearchPage = () => {
     // state to store the incoming search results from the student search bar
     const [searchResults, setSearchResults] = useState([])
 
-    const handleSearchSubmit = async(event) => {
+    const handleSearchSubmit = async (event) => {
         event.preventDefault();
         if (searchBarInputValidator()) {
             try {
                 const token = localStorage.getItem("token");
-                searchLoaderContainer.current.style.display= "flex"
+                searchLoaderContainer.current.style.display = "flex"
                 recommendedCoursesContainer.current.style.display = 'none';
                 searchedCoursesContainer.current.style.display = 'none';
-                
-                
-              
+
+
+
                 const response = await fetch('http://127.0.0.1:7000/api/v1/user/student/searched/courses', {
                     method: 'POST',
                     headers: {
@@ -198,10 +198,10 @@ export const StudentSearchPage = () => {
                 setSearchResults(data); // Update the state with the fetched data
                 recommendedCoursesContainer.current.style.display = 'none';
                 searchedCoursesContainer.current.style.display = 'flex';
-                searchLoaderContainer.current.style.display= "none"
+                searchLoaderContainer.current.style.display = "none"
 
-            
-              
+
+
             }
             catch (err) {
                 console.error('Error searching courses:', err);
@@ -229,22 +229,22 @@ export const StudentSearchPage = () => {
 
             <section className={"searchCoursesDisplayContainer"}>
 
-                    {/* container that displays the recommended courses */}
+                {/* container that displays the recommended courses */}
                 <div ref={recommendedCoursesContainer} className={"recommendedCoursesContainer"}>
                     <h1>Recommended Courses</h1>
-                {recommendedCourses.length > 0 ? (
-                    recommendedCourses.map((course) => (
-                        <div key={course.id} className={"courseCard"}>
-                            <h3>{capitalizeFirstLetter(course.title)}</h3>
-                            <br />
-                            <p>{course.description}</p>
-                            <br />
-                            <span>Created by: <span>{course.tutorId.firstname} {course.tutorId.lastname}</span></span>
-                        </div>
-                    ))
-                ) : (
-                    <p>No courses available at the moment.</p>
-                )}
+                    {recommendedCourses.length > 0 ? (
+                        recommendedCourses.map((course) => (
+                            <div key={course.id} className={"courseCard"}>
+                                <h3>{capitalizeFirstLetter(course.title)}</h3>
+                                <br />
+                                <p>{course.description}</p>
+                                <br />
+                                <span>Created by: <span>{course.tutorId.firstname} {course.tutorId.lastname}</span></span>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No courses available at the moment.</p>
+                    )}
                 </div>
 
                 <br />
@@ -253,19 +253,19 @@ export const StudentSearchPage = () => {
                 {/* container that displays the searched courses */}
                 <div ref={searchedCoursesContainer} className={"searchedCoursesContainer"}>
                     <h1>Search Results</h1>
-                {searchResults.length > 0 ? (
-                    searchResults.map((course) => (
-                        <div key={course.id} className={"courseCard"}>
-                            <h3>{capitalizeFirstLetter(course.title)}</h3>
-                            <br />
-                            <p>{course.description}</p>
-                            <br />
-                            <span>Created by: <span>{course.tutorId.firstname} {course.tutorId.lastname}</span></span>
-                        </div>
-                    ))
-                ) : (
-                    <p>No course matches your search, Try again.</p>
-                )}
+                    {searchResults.length > 0 ? (
+                        searchResults.map((course) => (
+                            <div key={course.id} className={"courseCard"}>
+                                <h3>{capitalizeFirstLetter(course.title)}</h3>
+                                <br />
+                                <p>{course.description}</p>
+                                <br />
+                                <span>Created by: <span>{course.tutorId.firstname} {course.tutorId.lastname}</span></span>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No course matches your search, Try again.</p>
+                    )}
                 </div>
 
                 {/* ========================================================================= */}
@@ -273,7 +273,7 @@ export const StudentSearchPage = () => {
                 {/* addding a loader when searching */}
 
                 <div ref={searchLoaderContainer} className={"searchLoaderContainer"}>
-                    <Loader/>
+                    <Loader />
                 </div>
 
                 {/* Adding the toaster styling here */}
@@ -283,5 +283,68 @@ export const StudentSearchPage = () => {
 
         </>
     )
+}
+
+
+// =====================================================================================
+
+// module for enrolled courses
+
+export const EnrolledCourses = () => {
+
+    // state to manage the incoming enrolled courses from the database
+    const [enrolledCourses, setEnrolledCourses] = useState([])
+
+    // function to capitalise the first letter of a string
+    function capitalizeFirstLetter(string) {
+        if (string.length === 0) {
+            return string; // Return the string if it's empty
+        }
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    // function to fetch the enrolled courses on mount/ render
+    useEffect(() => {
+
+        const fetchEnrolledCourses = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const response = await fetch('http://127.0.0.1:7000/api/v1/user/student/enrolledCourses', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+                const data = await response.json(); // Convert response to JSON
+                setEnrolledCourses(data); // Update the state with the fetched data
+            } catch (err) {
+                console.error('Error fetching enrolled courses:', err);
+            }
+        }
+        fetchEnrolledCourses();
+    })
+
+    return (
+        <>
+            <section className="enrolledCoursesContainer">
+                <h1> Enrolled Courses</h1>
+                {enrolledCourses.length > 0 ? (
+                    enrolledCourses.map((course) => (
+                        <div key={course.id} className="courseCard">
+                            <h3>{capitalizeFirstLetter(course.title)}</h3>
+                            
+                            <br />
+                            <p>{course.description}</p>
+                            <br />
+                            <span>Created by: <span>{course.tutorId.firstname} {course.tutorId.lastname}</span></span>
+                        </div>
+                    ))
+                ) : (
+                    <p>No courses enrolled yet.</p>
+                )}
+            </section>
+        </>
+    );
 }
 

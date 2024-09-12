@@ -4,7 +4,7 @@ import Loader from '../Loader/Loader';
 import ButtonLoader from '../Loader/ButtonLoader';
 import StudentDashboardNavbar from "../Components/StudentDashBoardComponents/StudentDashboardNavbar.jsx"
 import StudentDashboardSidebar from '../Components/StudentDashBoardComponents/StudentDashboardSidebar.jsx';
-import {StudentDashboardPage, StudentSearchPage} from "../Components/StudentDashBoardComponents/StudentDashboardDynamicSectionRenderer.jsx"
+import {StudentDashboardPage, StudentSearchPage, EnrolledCourses} from "../Components/StudentDashBoardComponents/StudentDashboardDynamicSectionRenderer.jsx"
 import { AppContext } from '../GeneralComponents/ContextApi.jsx';
 
 
@@ -29,6 +29,7 @@ const StudentDashboard = () => {
             
             {StudentDashboardIconClick && <StudentDashboardPage/>}
             {StudentSearchIconClick && <StudentSearchPage/>}
+            {StudentCoursesIconClick && <EnrolledCourses/>}
 
           </div>
           

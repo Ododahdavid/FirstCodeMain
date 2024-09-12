@@ -201,18 +201,23 @@ router.post("/student/enroll/:courseId", loggedIn, Restrict("student"), async(re
 })
 
 // route to get the students enrolled Courses
-router.get("/student/enrolledCourses", loggedIn, Restrict("student"), async (req, res, next)=>{
-  try{
-    const studentId = req.user._id
-    const student = await Student.findById(studentId).populate("enrolledCourses") // finds the student and populates it's enrolled courses... giving me the needed details about each course
+router.get("/student/enrolledCourses", loggedIn, Restrict("student"), async (req, res, next) => {
+  try {
+    const studentId = req.user._id;
+    const student = await Student.findById(studentId).lean();
+    // .lean() is used to get plain javascript object instead of mongoose documents which can be more efficient
 
-    const enrolledCourses = student.enrolledCourses
+    const enrolledCourses = await Course.find({
+      _id: { $in: student.enrolledCourses }
+    }).populate({
+      path: 'tutorId',
+      select: 'firstname lastname'
+    }).lean();
+
     res.status(200).json(enrolledCourses);
+  } catch (err) {
+    next(err);
   }
-  catch(err){
-    next("error message:",err.message )
-  }
-
-})
+});
 
 export default router;

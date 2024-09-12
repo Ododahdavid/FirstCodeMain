@@ -289,6 +289,8 @@
   width: 100%;
   text-align: center;
   font-weight: bold;
+  padding: 8px 0 8px 0;
+  border-bottom: solid 1px gray;
 }
 .courseCard p {
   width: 100%;
@@ -321,7 +323,8 @@
   text-align: center;
   color: rgb(255, 153, 0);
   font-size: 40px;
-
+  padding: 10px 0;
+  border-bottom: solid 2px rgb(255, 153, 0);
 }
 .searchedCoursesContainer{
   display: none;
@@ -346,5 +349,23 @@
   display: none;
   justify-content: center;
   align-items: center;
+}
+.enrolledCoursesContainer{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.enrolledCoursesContainer h1{
+  color: rgb(255, 153, 0);
+  width: 100%;
+  text-align: center;
+  font-size: 50px;
+  font-weight: bold;
+  padding: 10px 0;
+  border-bottom: solid 2px rgb(255, 153, 0);
 }
 

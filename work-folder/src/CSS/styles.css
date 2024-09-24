@@ -1081,6 +1081,8 @@ textarea {
 }
 .course-card:hover{
   background-color: #b9b9ba;
+  transform: scale(1.1);
+  z-index: 5;
 }
 .course-card:hover .options-wrapper svg {
   color: #ffffff;

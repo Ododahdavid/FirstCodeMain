@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import streakPic from "../../SrcImages/streakPic.png";
 import toast, { Toaster } from "react-hot-toast";
 import Loader from "../../Loader/Loader.jsx"
+import { Link } from 'react-router-dom';
 
 
 export const StudentDashboardPage = () => {
@@ -109,6 +110,8 @@ export const StudentDashboardPage = () => {
 
 // Module for search page on the student Dashboard
 
+// =======================================================================================
+
 
 export const StudentSearchPage = () => {
 
@@ -214,6 +217,7 @@ export const StudentSearchPage = () => {
     const searchLoaderContainer = useRef(null)
 
 
+
     return (
         <>
             {/* Search bar for student to search for courses    // search bar */}
@@ -226,6 +230,7 @@ export const StudentSearchPage = () => {
 
             {/* // =======================================================
                     // section to diplay courses */}
+              {/* ====================================================== */}
 
             <section className={"searchCoursesDisplayContainer"}>
 
@@ -234,13 +239,13 @@ export const StudentSearchPage = () => {
                     <h1>Recommended Courses</h1>
                     {recommendedCourses.length > 0 ? (
                         recommendedCourses.map((course) => (
-                            <div key={course.id} className={"courseCard"}>
+                            <Link to={`/course/${course._id}`} key={course._id} className={"courseCard"}>
                                 <h3>{capitalizeFirstLetter(course.title)}</h3>
                                 <br />
                                 <p>{course.description}</p>
                                 <br />
                                 <span>Created by: <span>{course.tutorId.firstname} {course.tutorId.lastname}</span></span>
-                            </div>
+                            </Link>
                         ))
                     ) : (
                         <p>No courses available at the moment.</p>
@@ -255,13 +260,13 @@ export const StudentSearchPage = () => {
                     <h1>Search Results</h1>
                     {searchResults.length > 0 ? (
                         searchResults.map((course) => (
-                            <div key={course.id} className={"courseCard"}>
-                                <h3>{capitalizeFirstLetter(course.title)}</h3>
-                                <br />
-                                <p>{course.description}</p>
-                                <br />
-                                <span>Created by: <span>{course.tutorId.firstname} {course.tutorId.lastname}</span></span>
-                            </div>
+                            <Link to={`/course/${course._id}`} key={course._id} className={"courseCard"}> {/** had and error here cause i typed course.id, instead of course_.id */}
+                            <h3>{capitalizeFirstLetter(course.title)}</h3>
+                            <br />
+                            <p>{course.description}</p>
+                            <br />
+                            <span>Created by: <span>{course.tutorId.firstname} {course.tutorId.lastname}</span></span>
+                        </Link>
                         ))
                     ) : (
                         <p>No course matches your search, Try again.</p>

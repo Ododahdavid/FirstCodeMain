@@ -45,7 +45,7 @@ router.get("/tutor/get/courses", loggedIn, Restrict("tutor"), async (req, res, n
 router.delete("/tutor/delete/course/:courseId", loggedIn, Restrict("tutor"), async (req, res, next) => {
   try {
     const courseId = req.params.courseId;
-    const tutorId = req.tutor._id;
+    const tutorId = req.user;
 
     // Find and delete the course only if it belongs to the logged-in tutor
     const course = await Course.findOneAndDelete({ _id: courseId, tutorId });

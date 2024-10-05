@@ -1,0 +1,30 @@
+*{
+    /* outline: dashed 1px red; */
+}
+
+.courseDetailsContainer{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e5e5f7;
+}
+.courseDetailsSection{
+    width: 50%;
+    height: fit-content;
+    padding: 0 0 0 80px;
+}
+.courseDetailsSection h1{
+    font-size: 52px;
+    color: rgb(255, 153, 0);
+}
+.courseStudentCount{
+    width: 50%;
+    height: fit-content;
+    padding: 40px;
+}
+.courseStudentCount h1{
+    color: rgb(255, 153, 0);
+    font-size: 50px;
+}

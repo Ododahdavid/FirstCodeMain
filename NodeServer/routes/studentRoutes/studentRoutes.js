@@ -1,3 +1,4 @@
+import  mongoose from "mongoose"
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import Student from '../../models/studentModels/studentModel.js'
@@ -6,6 +7,9 @@ import crypto from "crypto"
 import Course from '../../models/tutorModels/coursesModel.js';
 import loggedIn from '../../middlewares/isLoggedIn.js';
 import Restrict from '../../middlewares/restrict.js';
+import pkg from 'node-cache';
+const NodeCache = pkg;
+
 
 const router = express.Router();
 
@@ -179,6 +183,38 @@ router.post("/student/searched/courses", loggedIn, async (req, res, next)=>{
   }
 })
 
+// function to search for a course using it's course Id
+
+const courseCache = new NodeCache({ stdTTL: 600 }); // Cache for 10 minutes
+
+
+router.get("/student/course/:courseId", loggedIn, Restrict("student"), async (req, res, next) => {
+  try {
+      const courseId = req.params.courseId;
+      
+      // Basic validation
+      if (!mongoose.Types.ObjectId.isValid(courseId)) {
+          return res.status(400).json({ message: "Invalid course ID format" });
+      }
+
+      // Find course and populate tutor details
+      const courseDetails = await Course.findById(courseId)
+          .populate('tutorId', 'firstname lastname email')
+          .lean();
+
+      if (!courseDetails) {
+          return res.status(404).json({ message: "Course not found" });
+      }
+
+      res.status(200).json(courseDetails);
+
+  } catch (error) {
+      console.error("Error fetching course details:", error);
+      next(error);
+  }
+});
+
+// function to enroll  a course.
 router.post("/student/enroll/:courseId", loggedIn, Restrict("student"), async(req, res, next)=>{
   try{
     const studentId = req.user._id; //getting the student Id from the loggedIn middle ware

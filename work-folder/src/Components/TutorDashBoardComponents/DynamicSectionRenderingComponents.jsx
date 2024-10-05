@@ -109,6 +109,7 @@ const CourseCard = ({ course, onDelete }) => {
         const token = localStorage.getItem('token');
         deleteConfirmDialog.current.close();
         try {
+    
             const response = await fetch(`http://127.0.0.1:7000/api/v1/user/tutor/delete/course/${course._id}`, {
                 method: 'DELETE',
                 headers: {
@@ -116,26 +117,33 @@ const CourseCard = ({ course, onDelete }) => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-
+    
+            const data = await response.json();
+    
             if (response.ok) {
-                toast.success("Successfully deleted course", {
+                toast.success("Course deleted successfully", {
                     style: {
                         background: "rgb(144, 234, 96)",
                     },
                 });
-                setOptionClick(false);
-                onDelete(course._id);  // Call the onDelete callback to update the parent state
+                onDelete(course._id);  // Update the parent state
             } else {
-                toast.error("Failed to delete course", {
+                toast.error(`Failed to delete course: ${data.message}`, {
                     style: {
                         background: "rgb(255, 139, 139)",
                     },
                 });
             }
         } catch (error) {
-            toast.error('Something went wrong');
+            console.error("Error during course deletion:", error);
+            toast.error('Something went wrong', {
+                style: {
+                    background: "rgb(255, 139, 139)",
+                },
+            });
         }
     };
+    
 
     return (
         <>
@@ -227,7 +235,7 @@ export const TutorsCourses = () => {
         fetchCourses();
     }, []);
 
-    const handleDelete = (courseId) => {
+    const handleDeleteHideCourse = (courseId) => {
         setCourses(courses.filter(course => course._id !== courseId));
         // using the filter method to create a new array of courses... if the courseId is equal to the selected courseId, it ecludes it fro the new array.
     };
@@ -240,7 +248,7 @@ export const TutorsCourses = () => {
                     <Loader />
                 ) : courses && courses.length > 0 ? (
                     courses.map((course, index) => (
-                        <CourseCard key={index} course={course} onDelete={handleDelete} />
+                        <CourseCard key={index} course={course} onDelete={handleDeleteHideCourse} />
                     ))
                 ) : (
                     <p>No courses available.</p>

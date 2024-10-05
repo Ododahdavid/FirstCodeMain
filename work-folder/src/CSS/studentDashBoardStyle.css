@@ -273,6 +273,7 @@
   gap: 10px;
 }
 .courseCard{
+  text-decoration: none;
   width: 300px;
   height: 200px;
   /* outline: solid red 1px; */

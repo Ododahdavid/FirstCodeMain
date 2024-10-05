@@ -3,6 +3,7 @@ import "./CSS/styles.css"
 import "./CSS/PageLoader.css"
 import "./CSS/ButonLoader.css"
 import "./CSS/studentDashBoardStyle.css"
+import "./CSS/coursePageStyle.css"
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -10,6 +11,7 @@ import Footer from "./GeneralComponents/Footer";
 import Loader from "./Loader/Loader.jsx"
 import TutorSignUpFormPage from "./Pages/TutorSignUpFormPage.jsx";
 import { AppcontextProvider } from "./GeneralComponents/ContextApi"
+
 
 // Lazy imports
 const HomePage = React.lazy(() => import("./Pages/HomePage"))
@@ -21,6 +23,7 @@ const LoginPage = React.lazy(() => import ("./Pages/LoginPage"))
 const TutorViewCoursePage =React.lazy(()=> import ("./Pages/TutorViewCoursePage"))
 const ForgotPasswordPage = React.lazy(() => import ("./Pages/ForgotPassword"))
 const PasswordResetPage = React.lazy(() => import ("./Pages/PasswordReset"))
+const CoursePage = React.lazy(() => import("./Pages/CoursePage")) 
 
 // importing my context API
 
@@ -41,6 +44,7 @@ function App() {
               <Route path="/tutorviewcoursepage" element={<TutorViewCoursePage />} />
               <Route path="/tutorforgotpasswordpage" element={<ForgotPasswordPage />} />
               <Route path="/tutorresetpasswordpage" element={<PasswordResetPage />} />
+              <Route path="/course/:courseId" element={<CoursePage/>}/>
               <Route path="/*" element={<HomePage />} />
             </Routes>
             <Footer />
